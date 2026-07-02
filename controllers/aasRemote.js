@@ -139,6 +139,30 @@ exports.listShells = async (req, res) => {
 };
 
 /**
+ * POST /aas-remote/submodels
+ * Body: { baseUrl, auth?, cursor?, limit? }
+ * Lists the submodels of the remote repository (one page, full JSON). Feeds
+ * the AAS Gateway page: server-wide submodel listing, not scoped to a shell.
+ */
+exports.listSubmodels = async (req, res) => {
+  try {
+    const baseUrl = normalizeBaseUrl(req.body.baseUrl);
+    const { auth, cursor, limit = 100 } = req.body;
+
+    const r = await remoteGet(baseUrl, "/submodels", auth, { limit, ...(cursor ? { cursor } : {}) });
+    if (r.status < 200 || r.status >= 300) {
+      return res.status(502).json({ status: "Failure", message: `Server remoto: HTTP ${r.status}` });
+    }
+    return res.status(200).json({
+      status: "Success",
+      data: { submodels: pagedItems(r.data), paging: r.data?.paging_metadata || null },
+    });
+  } catch (err) {
+    return res.status(400).json({ status: "Failure", message: err.message });
+  }
+};
+
+/**
  * POST /aas-remote/pull
  * Body: { baseUrl, auth?, shellId? }
  * Fetches a shell and resolves the submodels it references. Returns the raw

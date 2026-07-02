@@ -15,6 +15,9 @@ router.post("/ping", aasRemote.ping);
 // POST /aas-remote/shells   → list shells from the remote repository
 router.post("/shells", aasRemote.listShells);
 
+// POST /aas-remote/submodels → list all submodels of the remote repository
+router.post("/submodels", aasRemote.listSubmodels);
+
 // POST /aas-remote/pull     → fetch a shell + its submodels (standard AAS JSON)
 router.post("/pull", aasRemote.pull);
 
