@@ -2,7 +2,8 @@ const Redis = require('ioredis');
 const https = require('https');
 const config = require('../config');
 
-const CACHE_KEY = 'AASStudio:idta:catalog';
+// v2: il payload include anche i path delle immagini (cover dei template)
+const CACHE_KEY = 'AASStudio:idta:catalog:v2';
 const CACHE_TTL = 24 * 60 * 60; // 24 ore
 
 const GITHUB_TREE_URL =
@@ -47,7 +48,8 @@ function fetchGitHubTree() {
 
 module.exports = {
   /**
-   * Restituisce l'array di path dei file JSON pubblicati.
+   * Restituisce i path dei file JSON pubblicati e delle immagini di
+   * documentazione (per le cover dei template): { paths, images }.
    * Cache Redis con TTL 24h; in caso di miss, fetcha GitHub API.
    */
   getCatalogPaths: async function () {
@@ -55,12 +57,19 @@ module.exports = {
     if (cached) return JSON.parse(cached);
 
     const data = await fetchGitHubTree();
-    const paths = data.tree
-      .filter((item) => item.type === 'blob' && item.path.startsWith('published/') && item.path.endsWith('.json'))
+    const published = data.tree.filter(
+      (item) => item.type === 'blob' && item.path.startsWith('published/')
+    );
+    const paths = published
+      .filter((item) => item.path.endsWith('.json') && !item.path.includes('/docs/'))
+      .map((item) => item.path);
+    const images = published
+      .filter((item) => /\/docs\/modules\/ROOT\/images\/[^/]+\.(png|svg|jpe?g)$/i.test(item.path))
       .map((item) => item.path);
 
-    await redis.setex(CACHE_KEY, CACHE_TTL, JSON.stringify(paths));
-    return paths;
+    const payload = { paths, images };
+    await redis.setex(CACHE_KEY, CACHE_TTL, JSON.stringify(payload));
+    return payload;
   },
 
   /**

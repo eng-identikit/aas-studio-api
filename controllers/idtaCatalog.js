@@ -5,7 +5,7 @@ const loggerService = require('../services/loggerService');
 module.exports = {
   /**
    * GET /v1/idta/catalog
-   * Restituisce l'array di path JSON dal repo IDTA, con cache Redis 24h.
+   * Restituisce { paths, images } dal repo IDTA, con cache Redis 24h.
    */
   getCatalog: async function (req, res) {
     try {
