@@ -18,15 +18,15 @@
 
 ## Ruolo in AAS Studio
 
-Questo modulo è il **backend obbligatorio** del [frontend AAS Studio](../aas-studio-react/README.md): login, sessioni e ogni operazione di editor, lifecycle e server della UI passano da questa API REST. Senza di esso il frontend non può funzionare correttamente.
+Questo modulo è il **backend obbligatorio** del [frontend AAS Studio](https://github.com/eng-identikit/aas-studio-react/blob/main/README.md): login, sessioni e ogni operazione di editor, lifecycle e server della UI passano da questa API REST. Senza di esso il frontend non può funzionare correttamente.
 
 | Modulo | Ruolo | Porta di default |
 |---|---|---|
-| [aas-studio-react](../aas-studio-react/README.md) | Web IDE (frontend) | `5173` (dev) |
+| [aas-studio-react](https://github.com/eng-identikit/aas-studio-react/blob/main/README.md) | Web IDE (frontend) | `5173` (dev) |
 | **aas-studio-api** (questo repo) | Backend REST | `9010` |
-| [aas-server-runner](../aas-server-runner/README.md) | Lancio server AAS di debug | `6790` / `6789` |
+| [aas-server-runner](https://github.com/eng-identikit/aas-server-runner/blob/main/README.md) | Lancio server AAS di debug | `6790` / `6789` |
 
-Fa inoltre da **gateway verso [aas-server-runner](../aas-server-runner/README.md)**: il frontend non parla mai direttamente col runner — le chiamate `/v1/runner/*` vengono inoltrate alla control API del runner (`AAS_RUNNER_URL`) per istanziare i server AAS di debug dall'interfaccia.
+Fa inoltre da **gateway verso [aas-server-runner](https://github.com/eng-identikit/aas-server-runner/blob/main/README.md)**: il frontend non parla mai direttamente col runner — le chiamate `/v1/runner/*` vengono inoltrate alla control API del runner (`AAS_RUNNER_URL`) per istanziare i server AAS di debug dall'interfaccia.
 
 ---
 
@@ -46,7 +46,7 @@ Fa inoltre da **gateway verso [aas-server-runner](../aas-server-runner/README.md
 - Node.js ≥ 18
 - **MariaDB** (account, documenti AAS, cronologia versioni)
 - **Redis** (store sessioni / refresh token)
-- [aas-server-runner](../aas-server-runner/README.md) — solo per la funzione "Run Server"
+- [aas-server-runner](https://github.com/eng-identikit/aas-server-runner/blob/main/README.md) — solo per la funzione "Run Server"
 
 ---
 
