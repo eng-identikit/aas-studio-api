@@ -12,6 +12,7 @@
   "author": "Manfredi G.ppe Pistone",
   "license": "GPL-3.0-only",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.115.0",
     "axios": "^1.13.1",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -25,9 +26,11 @@
     "mongoose": "^8.23.0",
     "morgan": "^1.10.0",
     "multer": "^2.0.2",
+    "openai": "^6.49.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "pdf-parse": "^2.4.5",
     "sequelize": "^6.37.0"
   },
   "devDependencies": {
