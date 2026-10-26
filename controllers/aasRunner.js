@@ -20,6 +20,9 @@ const REQUEST_TIMEOUT_MS = 30000;
  * on the same host, which is how the service is deployed (compose/Docker).
  */
 function debugUrl(port) {
+  // Dietro un Ingress (Kubernetes) l'host del runner non è raggiungibile dal
+  // browser: in quel caso l'URL pubblico del debug server arriva da env.
+  if (process.env.AAS_DEBUG_PUBLIC_URL) return process.env.AAS_DEBUG_PUBLIC_URL.replace(/\/+$/, "");
   try {
     const u = new URL(RUNNER_URL);
     return `${u.protocol}//${u.hostname}:${port}`;

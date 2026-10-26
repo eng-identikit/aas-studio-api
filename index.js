@@ -10,9 +10,11 @@ var isProduction = config.stage == "production";
 
 const app = express();
 
+// Origini extra separate da virgola (es. dominio dell'Ingress in Kubernetes)
 const allowedOrigins = [
   'https://localhost',
-  'http://localhost:5173'
+  'http://localhost:5173',
+  ...(process.env.CORS_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean)
 ];
 
 app.use(cors({
